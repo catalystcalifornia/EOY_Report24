@@ -1,0 +1,316 @@
+---
+title: ""
+output:
+  html_document:
+    css: styles.css
+    includes:
+       in_header: inters.html
+       
+---
+<!-- link to Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+
+
+<!-- High-Chart Responsiveness -->
+<style type="text/css">
+div.main-container {
+  max-width: 100%;
+  max-height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+
+  
+```{r setup, include=FALSE}
+# width> 8 creates a scroll-bar at the bottom. Should be 10 to fit the page.
+#    fig_width: 10
+    #fig_height: 7
+#install packages if not already installed
+list.of.packages <- c("openxlsx","tidyr","dplyr","stringr","RPostgreSQL","data.table") #,"plyr"
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+#### Set up workspace ####
+library(usethis)
+library(extrafont)
+library(ggrepel)
+library(rlang)
+library(stringr)
+library(tidyverse)
+library(here)
+library(dplyr)
+library(formattable)
+library(svglite)
+library(stringr)
+library(tidyr)
+library(showtext)
+library(scales)
+library(kableExtra)
+library(flextable)
+library(highcharter)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r results="asis"}
+cat("
+<style>
+.container-fluid {
+   padding-left: 0px;
+   padding-right: 0px;
+   height: 100% !important;
+   width: 100% !important;
+}
+</style>
+")
+```
+
+
+```{css, echo=FALSE}
+.highcharts-container{
+  width: 100% !important;
+}
+
+.highcharts-root{
+  width: 100% !important;
+}
+```
+
+```{r, include=FALSE}
+assets <- c("Cash", 
+            "Investments in Equity Securities",
+            "Contributions and Grants Receivables", 
+            "Contracts Receivable",
+            "Prepaid Expenses and Other Assets", 
+            "Property and Equipment (net)", 
+            "Right-of-Use Lease Assets")
+value <- c(5526389, 1758377, 4234247, 219451, 73782, 115681, 800348)
+df <- data.frame(assets, value)
+df <- df %>% mutate(percentage=round(value/sum(value)*100,1))
+df<- df %>% mutate(value = paste0("$", prettyNum(value, big.mark = ",", scientific = FALSE)))
+df <- df %>% arrange(desc(percentage))
+
+
+# Total Assets	 $6798530
+```
+
+```{r, include=FALSE}
+#### Set themes and options ####
+# set global options to ensure that comma separator is a comma for highchart graphs
+lang <- getOption("highcharter.lang")
+lang$thousandsSep <- ","
+options(highcharter.lang = lang)
+
+## COLORS ##
+#orange <- "#F25922"
+#peridot <- "#CEEA01"
+#lavender <- "#CEC4E2"
+meteorite <- "#3A207D"
+languid <- "#D6CADD"
+black <- "#000000"
+alabaster<-"#FBFBFB"
+gainsboro <- "#2B2B2B"
+
+color_option_b <- c(meteorite, "#991F7B", "#D8406A", "#FC7957", "#FFB951", "#FFEEAC", languid)
+
+## FONTS ##
+# showtext_auto()
+# loadfonts()  
+# fileConn <- file("W:\\Project\\Communications\\EOY_Report23\\inters.html")
+# writeLines('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap">', fileConn)
+# close(fileConn)
+
+# define fonts in chart
+main_font <- "Inter"
+black_font_weight <- 900
+regular_font_weight <- 400
+
+# font_title <- "Inter Black"
+# font_subtitle <- "Inter Black"
+# font_caption <- "Inter Regular"
+# font_bar_label <- "Inter Regular"
+# font_axis_label <- "Inter Regular"
+# font_x_label<-"Inter Regular"
+# font_table_text<-"Inter Regular"
+
+# highchart theme 
+cc_theme <- hc_theme(
+  colors = color_option_b,
+  chart = list(
+    backgroundColor = alabaster,
+    style = list(
+      fontFamily = main_font, # font_subtitle
+      fontWeight = black_font_weight,
+      color=alabaster
+    ) 
+  ),
+  plotOptions = 
+    list(
+      line = 
+        list(
+          marker = 
+            list(
+              # lineWidth=10 # this isn't working
+            )
+        )
+    ),
+  title = list(
+    style = list(
+      color = black,
+      fontFamily = main_font, # font_title
+      fontWeight = black_font_weight,
+      textAlign="left",
+      fontSize='24px'
+    )
+  ),
+  subtitle = list(
+    style = list(
+      color = black, 
+      fontFamily = main_font, # font_subtitle
+      fontWeight = black_font_weight,
+      textAlign="left",
+      fontSize='14px'
+    )
+  ),
+  caption = list(
+    style = list(
+      color = meteorite,
+      fontFamily = main_font, #font_caption
+      fontWeight = regular_font_weight,
+      textAlign = "left",
+      fontSize="8px"
+    ),
+    useHTML = TRUE
+  ),
+  axis = list(
+    style = list(
+      color = gainsboro,
+      fontFamily =  main_font, # font_axis_label
+      fontWeight = regular_font_weight,
+      fontSize='12px'
+    )
+  ),
+  
+  xAxis=list(
+    labels=list(
+      style=list(
+        color=black,
+        fontFamily = main_font, # font_x_label
+        fontWeight = regular_font_weight,
+        width=120,  #argument to modify the width of the labels,
+        spacingLeft = "150px",
+        fontSize="12px"
+      ))
+  ),
+  
+  yAxis=list(
+    labels=list(
+      style=list(
+        color=black,
+        fontFamily= main_font, # font_axis_label
+        fontWeight = regular_font_weight,
+        fontSize="12px",
+        margin = 80
+      ))
+  ),
+  
+  
+  legend = list(
+    itemStyle = list(
+      fontFamily= main_font, # font_axis_label
+      fontWeight = regular_font_weight,
+      color = black
+    ),
+    itemHoverStyle = list(
+      fontFamily= main_font, # font_table_text
+      fontWeight = regular_font_weight,
+      color = black
+    ),
+    # tooltip=list(headerFormat=""),
+    plotLines=list(color=gainsboro)
+  )
+)
+```
+
+
+
+
+
+```{r, echo=FALSE,out.width="100%", out.height="100%"}
+hchart(df,
+       "pie", hcaes(x = assets, y = percentage),
+       name = "Assets", dataLabels = list(enabled = TRUE, style = list(
+      fontSize = '16px'))
+    
+       
+) %>%
+  
+  hc_tooltip(
+   headerFormat= "",
+    style = list(
+      color = black, 
+      fontFamily = main_font, # font_subtitle
+      fontWeight = black_font_weight,
+      fontSize='16px'
+    ), 
+   
+    pointFormat = "{point.assets} </b> <br> {point.value:.0f} </b> <br> {point.percentage:.1f}%",
+    style = list(
+      color = black, 
+      fontFamily = main_font, # font_subtitle
+      fontWeight = black_font_weight,
+      fontSize='16px'
+    )) %>% 
+  # hc_colorAxis(minColor=peridot, maxColor = lavender)%>%  
+  hc_legend(enabled = FALSE)%>%
+  hc_title(
+    text = "Statement of Financial Position",
+   
+    margin = 25,
+    align = "center",
+    style = list(useHTML = TRUE, fontWeight= black_font_weight,  fontSize = '25px')
+  ) %>% 
+  
+  hc_subtitle(
+    text = "Assets",
+    margin = 20,
+    align = "left",
+    style = list(useHTML = TRUE, fontWeight= black_font_weight, fontSize='20px')
+  ) %>% 
+  hc_caption(
+    text = paste0("Total Assets: $12,728,275"),
+    align = "center",
+    style = list(useHTML = TRUE, fontSize = '22px', fontFamily = main_font, # font_title
+      fontWeight = black_font_weight)) %>%
+  
+  hc_plotOptions(pie = list(
+    dataLabels = list(distance = 50, 
+                      enabled = TRUE, 
+                      style = list(
+      color = "black",
+      fontFamily = "Inter",
+      fontWeight = regular_font_weight,
+      fontSize="14"))) ) %>% 
+  
+  hc_add_theme(cc_theme)  %>% hc_size(
+      700, 480
+    )
+# 700, 480
+
+  #hc_exporting(
+   # enabled = TRUE, sourceWidth=900, sourceHeight=600, 
+   # chartOptions=list(plotOptions=list(series=list(dataLabels=list(enabled=TRUE, format='{y} %')))),
+   # filename = "catalystcalifornia.org, 2023."
+ # )
+```
+
+
+```{css, echo=FALSE}
+.highcharts-container{
+  width: 100% !important;
+}
+
+.highcharts-root{
+  width: 100% !important;
+}
+```
