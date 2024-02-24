@@ -28,6 +28,7 @@ options(highcharter.lang = lang)
 meteorite <- "#3A207D"
 black <- "#000000"
 alabaster<-"#FBFBFB"
+white <- "#FFFFFF"
 gainsboro <- "#2B2B2B"
 
 # define fonts in chart
@@ -35,60 +36,14 @@ main_font <- "Inter"
 black_font_weight <- 900
 regular_font_weight <- 400
 
-# highchart theme 
-# cc_theme <- hc_theme(colors = c(meteorite, "#991F7B", "#D8406A", "#FC7957"),
-#                      chart = list(backgroundColor = alabaster,
-#                                   style = list(fontFamily = main_font, # font_subtitle
-#                                                fontWeight = black_font_weight,
-#                                                color=alabaster)),
-#                      title = list(style = list(color = black,
-#                                                fontFamily = main_font, # font_title
-#                                                fontWeight = black_font_weight,
-#                                                textAlign="left",
-#                                                fontSize='24px')),
-#                      subtitle = list(style = list(color = black,
-#                                                   fontFamily = main_font, # font_subtitle
-#                                                   fontWeight = black_font_weight,
-#                                                   textAlign="left",
-#                                                   fontSize='14px')),
-#                      caption = list(style = list(color = meteorite,
-#                                                  fontFamily = main_font, #font_caption
-#                                                  fontWeight = regular_font_weight,
-#                                                  textAlign = "left",
-#                                                  fontSize="8px"),
-#                                     useHTML = TRUE),
-#                      axis = list(style = list(color = gainsboro,
-#                                               fontFamily =  main_font, # font_axis_label
-#                                               fontWeight = regular_font_weight,
-#                                               fontSize='12px')),
-#                      xAxis=list(labels=
-#                                   list(style=list(color=black,
-#                                                   fontFamily = main_font, # font_x_label
-#                                                   fontWeight = regular_font_weight,
-#                                                   width=120,  #argument to modify the width of the labels,
-#                                                   spacingLeft = "150px",
-#                                                   fontSize="14px"))),
-#                      yAxis=list(labels=
-#                                   list(style=list(color=black,
-#                                                   fontFamily= main_font, # font_axis_label
-#                                                   fontWeight = regular_font_weight,
-#                                                   fontSize="12px",
-#                                                   margin = 50))),
-#                      legend = list(itemStyle = 
-#                                      list(fontFamily= main_font, # font_axis_label
-#                                           fontWeight = regular_font_weight,
-#                                           color = black),
-#                                    itemHoverStyle = 
-#                                      list(fontFamily= main_font, # font_table_text
-#                                           fontWeight = regular_font_weight,
-#                                           color = black),
-#                                    plotLines=list(color=gainsboro)))
+# set theme 
 #(Theme colors Developed from online color generator based on meteorite https://mycolor.space/?hex=%233A207D&sub=1)
-eoy_theme <- hc_theme(colors = c(meteorite, "#991F7B", "#D8406A", "#FC7957"),
+eoy_colors <- c(meteorite, "#991F7B", "#D8406A", "#FC7957")
+eoy_theme <- hc_theme(colors = eoy_colors,
                      chart = list(backgroundColor = alabaster,
                                   style = list(fontFamily = main_font, 
                                                fontWeight = black_font_weight,
-                                               color=alabaster)),
+                                               color=white)),
               
                      title = list(align="center",
                                   style = list(color = black,
@@ -113,23 +68,22 @@ eoy_theme <- hc_theme(colors = c(meteorite, "#991F7B", "#D8406A", "#FC7957"),
                                               fontFamily =  main_font,
                                               fontWeight = regular_font_weight,
                                               fontSize='14px')),
-                     xAxis=list(labels=
-                                  list(style=list(color=black,
+                     xAxis=list(title=list(enabled=FALSE),
+                                labels=list(style=list(color=black,
                                                   fontFamily = main_font, 
                                                   fontWeight = regular_font_weight,
                                                   width=120,  #argument to modify the width of the labels,
                                                   fontSize="14px"))),
-                     yAxis=list(visible = F, 
+                     yAxis=list(title=list(enabled=FALSE),
+                                labels=list(style=list(color=black,
+                                                  fontFamily= main_font, # font_axis_label
+                                                  fontWeight = regular_font_weight,
+                                                  fontSize="14px")),
+                                visible = F, 
                                 startOnTick = F, 
                                 endOnTick = F, 
                                 min = 0, 
-                                max = 9200000,
-                                labels=
-                                  list(style=list(color=black,
-                                                  fontFamily= main_font, # font_axis_label
-                                                  fontWeight = regular_font_weight,
-                                                  fontSize="12px",
-                                                  margin = 50))))
+                                max = 9200000))
 
 ```
 
@@ -141,14 +95,10 @@ eoy_theme <- hc_theme(colors = c(meteorite, "#991F7B", "#D8406A", "#FC7957"),
 support <- c("Contributions", "Contracts", "Grants", "Other Income")
 revenue <- c(2359843, 1779856, 9018627, 66838)
 
-df <- data.frame(support, revenue) %>% 
+df <- data.frame(support, revenue) %>%
   mutate(percentage=paste0(round(revenue/sum(revenue)*100, 1), "%"),
-         revenue_label = paste0("$", prettyNum(revenue, big.mark = ",", scientific = FALSE))) %>% 
+         revenue_label = paste0("$", prettyNum(revenue, big.mark = ",", scientific = FALSE))) %>%
   arrange(desc(revenue))
-
-# order support based on highest to lowest revenue
-support_order <- order(df$revenue, decreasing=TRUE)
-df$support <- factor(df$support, levels = df$support[support_order])
 
 # Total Support & Revenue: $13,225,164
 
@@ -156,37 +106,29 @@ df$support <- factor(df$support, levels = df$support[support_order])
 
 ```{r, echo=FALSE,out.width="100%", out.height="100%"}
 # Bar Chart for Support and Revenue 
-highchart() %>%
-  hc_add_series(df,
+hchart(df,
        type = "bar",
-       hcaes(x = support, y = revenue, group = support),
+       hcaes(x=support, y=revenue, color=eoy_colors),
        dataLabels = list(enabled = TRUE,
-                         format = '{point.revenue_label}')) %>%
+                         format = '{point.revenue_label}',
+                         style = list(fontFamily = main_font, # font_subtitle
+                          fontWeight = black_font_weight,
+                          fontSize='14px'))) %>%
   hc_tooltip(headerFormat= "",
-             style = list(color = black, 
+             style = list(color = black,
                           fontFamily = main_font, # font_subtitle
                           fontWeight = black_font_weight,
                           fontSize='16px'), # size of labels
-             pointFormat = "{point.percentage:.1f}", 
-             style = list(color = black, 
-                          fontFamily = main_font, # font_subtitle
-                          fontWeight = black_font_weight,
-                          fontSize='14px')) %>%
-  
-  hc_yAxis(title = list(text = paste0(""))) %>%
-  
-  hc_xAxis(title = list(enabled = FALSE, 
-                        text = paste0("")),
-           crosshair=TRUE) %>%
-  
-  hc_title(text = "Statement of Activities") %>% 
-  
+             pointFormat = "{point.percentage:.1f}") %>%
+
+  hc_title(text = "Statement of Activities") %>%
+
   hc_subtitle(text = "Support and Revenue") %>%
-  
+
   hc_caption(text = "Total Support & Revenue: $13,225,164") %>%
   
   hc_add_theme(eoy_theme)  %>% 
-  
+
   hc_size(700, 480)
 
 ```
