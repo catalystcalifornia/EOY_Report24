@@ -10,16 +10,6 @@ output:
 <!-- link to Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- High-Chart Responsiveness -->
-<style type="text/css">
-div.main-container {
-  max-width: 100%;
-  max-height: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-</style>
-
 ```{r setup, include=FALSE}
 # width> 8 creates a scroll-bar at the bottom. Should be 10 to fit the page
 #    fig_width: 10
@@ -50,21 +40,6 @@ library(highcharter)
 knitr::opts_chunk$set(echo = FALSE)
 
 ```
-
-```{r results="asis"}
-cat("
-<style>
-.container-fluid {
-   padding-left: 0px;
-   padding-right: 0px;
-   height: 100% !important;
-   width: 100% !important;
-}
-</style>
-")
-```
-
-
 
 ```{r, include=FALSE}
 #### Set themes and options ####
@@ -273,18 +248,22 @@ df<- df %>% mutate(revenue_label = paste0("$", prettyNum(revenue, big.mark = ","
   #    filename = "catalystcalifornia.org, 2023."
 
 ```
-
-```{css, echo=FALSE}
-.highcharts-container{
-  width: 100% !important;
+<style>
+.container-fluid {
+   padding-left: 0px;
+   padding-right: 0px;
+   height: 100% !important;
+   width: 100% !important;
 }
+</style>
 
-.highcharts-root{
-  width: 100% !important;
-}
-```
-
-
+<script>
+  widg = document.getElementsByClassName('html-widget'); //find widgets
+  for (let i = 0; i < widg.length; i++) { //loop through
+    document.getElementsByClassName('highchart')[i].style.width = '100%'; //adjust width
+    document.getElementsByClassName('highchart')[i].style.height = '100%'; //adjust height
+  }
+</script>
 
 
 
