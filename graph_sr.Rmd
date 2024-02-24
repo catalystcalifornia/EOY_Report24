@@ -40,93 +40,53 @@ black_font_weight <- 900
 regular_font_weight <- 400
 
 # highchart theme 
-cc_theme <- hc_theme(
-  colors = c(meteorite, lavender, orange, peridot
-  ),
-  chart = list(
-    backgroundColor = alabaster,
-    style = list(
-      fontFamily = main_font, # font_subtitle
-      fontWeight = black_font_weight,
-      color=alabaster
-    ) 
-  ),
-  title = list(
-    style = list(
-      color = black,
-      fontFamily = main_font, # font_title
-      fontWeight = black_font_weight,
-      textAlign="left",
-      fontSize='24px'
-    )
-  ),
-  subtitle = list(
-    style = list(
-      color = black, 
-      fontFamily = main_font, # font_subtitle
-      fontWeight = black_font_weight,
-      textAlign="left",
-      fontSize='14px'
-    )
-  ),
-  caption = list(
-    style = list(
-      color = meteorite,
-      fontFamily = main_font, #font_caption
-      fontWeight = regular_font_weight,
-      textAlign = "left",
-      fontSize="8px"
-    ),
-    useHTML = TRUE
-  ),
-  axis = list(
-    style = list(
-      color = gainsboro,
-      fontFamily =  main_font, # font_axis_label
-      fontWeight = regular_font_weight,
-      fontSize='12px'
-    )
-  ),
-  
-  xAxis=list(
-    labels=list(
-      style=list(
-        color=black,
-        fontFamily = main_font, # font_x_label
-        fontWeight = regular_font_weight,
-        width=120,  #argument to modify the width of the labels,
-        spacingLeft = "150px",
-        fontSize="14px"
-      ))
-  ),
-  
-  yAxis=list(
-    labels=list(
-      style=list(
-        color=black,
-        fontFamily= main_font, # font_axis_label
-        fontWeight = regular_font_weight,
-        fontSize="12px",
-        margin = 50
-      ))
-  ),
-  
-  
-  legend = list(
-    itemStyle = list(
-      fontFamily= main_font, # font_axis_label
-        fontWeight = regular_font_weight,
-      color = black
-    ),
-    itemHoverStyle = list(
-      fontFamily= main_font, # font_table_text
-      fontWeight = regular_font_weight,
-      color = black
-    ),
-    # tooltip=list(headerFormat=""),
-    plotLines=list(color=gainsboro)
-  )
-)
+cc_theme <- hc_theme(colors = c(meteorite, lavender, orange, peridot),
+                     chart = list(backgroundColor = alabaster,
+                                  style = list(fontFamily = main_font, # font_subtitle
+                                               fontWeight = black_font_weight,
+                                               color=alabaster)),
+                     title = list(style = list(color = black,
+                                               fontFamily = main_font, # font_title
+                                               fontWeight = black_font_weight,
+                                               textAlign="left",
+                                               fontSize='24px')),
+                     subtitle = list(style = list(color = black,
+                                                  fontFamily = main_font, # font_subtitle
+                                                  fontWeight = black_font_weight,
+                                                  textAlign="left",
+                                                  fontSize='14px')),
+                     caption = list(style = list(color = meteorite,
+                                                 fontFamily = main_font, #font_caption
+                                                 fontWeight = regular_font_weight,
+                                                 textAlign = "left",
+                                                 fontSize="8px"),
+                                    useHTML = TRUE),
+                     axis = list(style = list(color = gainsboro,
+                                              fontFamily =  main_font, # font_axis_label
+                                              fontWeight = regular_font_weight,
+                                              fontSize='12px')),
+                     xAxis=list(labels=
+                                  list(style=list(color=black,
+                                                  fontFamily = main_font, # font_x_label
+                                                  fontWeight = regular_font_weight,
+                                                  width=120,  #argument to modify the width of the labels,
+                                                  spacingLeft = "150px",
+                                                  fontSize="14px"))),
+                     yAxis=list(labels=
+                                  list(style=list(color=black,
+                                                  fontFamily= main_font, # font_axis_label
+                                                  fontWeight = regular_font_weight,
+                                                  fontSize="12px",
+                                                  margin = 50))),
+                     legend = list(itemStyle = 
+                                     list(fontFamily= main_font, # font_axis_label
+                                          fontWeight = regular_font_weight,
+                                          color = black),
+                                   itemHoverStyle = 
+                                     list(fontFamily= main_font, # font_table_text
+                                          fontWeight = regular_font_weight,
+                                          color = black),
+                                   plotLines=list(color=gainsboro)))
 
 ```
 
