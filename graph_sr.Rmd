@@ -25,11 +25,7 @@ options(highcharter.lang = lang)
 ```{r, include=FALSE}
 #### Set themes and options ####
 ## COLORS ##
-orange <- "#F25922"
-peridot <- "#CEEA01"
-lavender <- "#CEC4E2"
 meteorite <- "#3A207D"
-languid <- "#D6CADD"
 black <- "#000000"
 alabaster<-"#FBFBFB"
 gainsboro <- "#2B2B2B"
@@ -40,7 +36,7 @@ black_font_weight <- 900
 regular_font_weight <- 400
 
 # highchart theme 
-cc_theme <- hc_theme(colors = c(meteorite, lavender, orange, peridot),
+cc_theme <- hc_theme(colors = c(meteorite, "#991F7B", "#D8406A", "#FC7957"),
                      chart = list(backgroundColor = alabaster,
                                   style = list(fontFamily = main_font, # font_subtitle
                                                fontWeight = black_font_weight,
@@ -98,32 +94,26 @@ cc_theme <- hc_theme(colors = c(meteorite, lavender, orange, peridot),
 support <- c("Contributions", "Contracts", "Grants", "Other Income")
 revenue <- c(2359843, 1779856, 9018627, 66838)
 
-color_option_b <- c(meteorite, "#991F7B", "#D8406A", "#FC7957")
+df <- data.frame(support, revenue) %>% 
+  mutate(percentage=paste0(round(revenue/sum(revenue)*100, 1), "%"),
+         revenue_label = paste0("$", prettyNum(revenue, big.mark = ",", scientific = FALSE))) %>% 
+  arrange(desc(revenue))
 
-
-df <- data.frame(support, revenue)
-
-df <- df %>% mutate(percentage=round(revenue/sum(revenue)*100,1))
-
-df <- df %>% mutate(percentage=paste0(round(revenue/sum(revenue)*100,1),"%"))
-
-df <- df %>% arrange(desc(revenue))
-
-df<- df %>% mutate(revenue_label = paste0("$", prettyNum(revenue, big.mark = ",", scientific = FALSE)))
-
+# order support based on highest to lowest revenue
+support_order <- order(df$revenue, decreasing=TRUE)
+df$support <- factor(df$support, levels = df$support[support_order])
 
 # Total Support & Revenue: $13,225,164
-
 
 ```
 
 ```{r, echo=FALSE,out.width="100%", out.height="100%"}
 #(Color Option B- Developed from online color generator based on meteorite https://mycolor.space/?hex=%233A207D&sub=1)
 # Bar Chart for Support and Revenue 
-  hchart(df ,
+  hchart(df,
     type = "bar",
-    hcaes(x = support, y =revenue,
-    color = color_option_b),
+    hcaes(x = support, y =revenue, group=support
+    ),
     dataLabels = list(enabled = TRUE, style = list(
       fontSize = '14px'
     ), format = '{point.revenue_label}')) %>% 
@@ -187,6 +177,3 @@ df<- df %>% mutate(revenue_label = paste0("$", prettyNum(revenue, big.mark = ","
     document.getElementsByClassName('highchart')[i].style.height = '100%'; //adjust height
   }
 </script>
-
-
-
