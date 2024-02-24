@@ -9,43 +9,21 @@ output:
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 ```{r setup, include=FALSE}
-# width> 8 creates a scroll-bar at the bottom. Should be 10 to fit the page
-#    fig_width: 10
-    #fig_height: 7
-#install packages if not already installed
-list.of.packages <- c("openxlsx","tidyr","dplyr","stringr","RPostgreSQL","data.table") #,"plyr"
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
-
 #### Set up workspace ####
-library(usethis)
-library(extrafont)
-library(ggrepel)
-library(rlang)
-library(stringr)
-library(tidyverse)
-library(here)
 library(dplyr)
-library(formattable)
-library(svglite)
-library(stringr)
-library(tidyr)
-library(showtext)
-library(scales)
-library(kableExtra)
-library(flextable)
 library(highcharter)
+
 knitr::opts_chunk$set(echo = FALSE)
 
-```
-
-```{r, include=FALSE}
-#### Set themes and options ####
 # set global options to ensure that comma separator is a comma for highchart graphs
 lang <- getOption("highcharter.lang")
 lang$thousandsSep <- ","
 options(highcharter.lang = lang)
 
+```
+
+```{r, include=FALSE}
+#### Set themes and options ####
 ## COLORS ##
 orange <- "#F25922"
 peridot <- "#CEEA01"
@@ -73,16 +51,6 @@ cc_theme <- hc_theme(
       color=alabaster
     ) 
   ),
-  plotOptions = 
-    list(
-      line = 
-        list(
-          marker = 
-            list(
-              # lineWidth=10 # this isn't working
-            )
-        )
-    ),
   title = list(
     style = list(
       color = black,
@@ -236,14 +204,11 @@ df<- df %>% mutate(revenue_label = paste0("$", prettyNum(revenue, big.mark = ","
     align = "center",
     style = list(useHTML = TRUE, fontSize = '22px', fontFamily = main_font, # font_title
       fontWeight = black_font_weight)) %>%
-    hc_add_theme(cc_theme)  %>% hc_size(
+    hc_add_theme(cc_theme)  %>% 
+  hc_size(
       700, 480
     )
- #700, 480
-  #  hc_exporting(
-  #    enabled = TRUE, sourceWidth=900, sourceHeight=600, 
-  #    chartOptions=list(plotOptions=list(series=list(dataLabels=list(enabled=TRUE, format='{y} %')))),
-  #    filename = "catalystcalifornia.org, 2023."
+
 
 ```
 <style>
