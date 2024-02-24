@@ -2,7 +2,7 @@
 title: ""
 output:
    html_document:
-    css: "W:\\RDA Team\\R\\cc_brandguide.css"
+
        
 ---
 <!-- link to Google Font -->
@@ -36,58 +36,105 @@ black_font_weight <- 900
 regular_font_weight <- 400
 
 # highchart theme 
-cc_theme <- hc_theme(colors = c(meteorite, "#991F7B", "#D8406A", "#FC7957"),
+# cc_theme <- hc_theme(colors = c(meteorite, "#991F7B", "#D8406A", "#FC7957"),
+#                      chart = list(backgroundColor = alabaster,
+#                                   style = list(fontFamily = main_font, # font_subtitle
+#                                                fontWeight = black_font_weight,
+#                                                color=alabaster)),
+#                      title = list(style = list(color = black,
+#                                                fontFamily = main_font, # font_title
+#                                                fontWeight = black_font_weight,
+#                                                textAlign="left",
+#                                                fontSize='24px')),
+#                      subtitle = list(style = list(color = black,
+#                                                   fontFamily = main_font, # font_subtitle
+#                                                   fontWeight = black_font_weight,
+#                                                   textAlign="left",
+#                                                   fontSize='14px')),
+#                      caption = list(style = list(color = meteorite,
+#                                                  fontFamily = main_font, #font_caption
+#                                                  fontWeight = regular_font_weight,
+#                                                  textAlign = "left",
+#                                                  fontSize="8px"),
+#                                     useHTML = TRUE),
+#                      axis = list(style = list(color = gainsboro,
+#                                               fontFamily =  main_font, # font_axis_label
+#                                               fontWeight = regular_font_weight,
+#                                               fontSize='12px')),
+#                      xAxis=list(labels=
+#                                   list(style=list(color=black,
+#                                                   fontFamily = main_font, # font_x_label
+#                                                   fontWeight = regular_font_weight,
+#                                                   width=120,  #argument to modify the width of the labels,
+#                                                   spacingLeft = "150px",
+#                                                   fontSize="14px"))),
+#                      yAxis=list(labels=
+#                                   list(style=list(color=black,
+#                                                   fontFamily= main_font, # font_axis_label
+#                                                   fontWeight = regular_font_weight,
+#                                                   fontSize="12px",
+#                                                   margin = 50))),
+#                      legend = list(itemStyle = 
+#                                      list(fontFamily= main_font, # font_axis_label
+#                                           fontWeight = regular_font_weight,
+#                                           color = black),
+#                                    itemHoverStyle = 
+#                                      list(fontFamily= main_font, # font_table_text
+#                                           fontWeight = regular_font_weight,
+#                                           color = black),
+#                                    plotLines=list(color=gainsboro)))
+#(Theme colors Developed from online color generator based on meteorite https://mycolor.space/?hex=%233A207D&sub=1)
+eoy_theme <- hc_theme(colors = c(meteorite, "#991F7B", "#D8406A", "#FC7957"),
                      chart = list(backgroundColor = alabaster,
-                                  style = list(fontFamily = main_font, # font_subtitle
+                                  style = list(fontFamily = main_font, 
                                                fontWeight = black_font_weight,
                                                color=alabaster)),
-                     title = list(style = list(color = black,
-                                               fontFamily = main_font, # font_title
+              
+                     title = list(align="center",
+                                  style = list(color = black,
+                                               fontFamily = main_font, 
                                                fontWeight = black_font_weight,
-                                               textAlign="left",
-                                               fontSize='24px')),
-                     subtitle = list(style = list(color = black,
-                                                  fontFamily = main_font, # font_subtitle
+                                               fontSize='25px'),
+                                  useHTML = TRUE),
+                     subtitle = list(align="left",
+                                     style = list(color = black,
+                                                  fontFamily = main_font, 
                                                   fontWeight = black_font_weight,
-                                                  textAlign="left",
-                                                  fontSize='14px')),
-                     caption = list(style = list(color = meteorite,
-                                                 fontFamily = main_font, #font_caption
-                                                 fontWeight = regular_font_weight,
-                                                 textAlign = "left",
-                                                 fontSize="8px"),
+                                                  fontSize='20px'),
+                                     useHTML = TRUE),
+                     caption = list(align="center",
+                                    style = list(color = meteorite,
+                                                 fontFamily = main_font, 
+                                                 fontWeight = black_font_weight,
+                                                 fontSize="22px"),
                                     useHTML = TRUE),
+             
                      axis = list(style = list(color = gainsboro,
-                                              fontFamily =  main_font, # font_axis_label
+                                              fontFamily =  main_font,
                                               fontWeight = regular_font_weight,
-                                              fontSize='12px')),
+                                              fontSize='14px')),
                      xAxis=list(labels=
                                   list(style=list(color=black,
-                                                  fontFamily = main_font, # font_x_label
+                                                  fontFamily = main_font, 
                                                   fontWeight = regular_font_weight,
                                                   width=120,  #argument to modify the width of the labels,
-                                                  spacingLeft = "150px",
                                                   fontSize="14px"))),
-                     yAxis=list(labels=
+                     yAxis=list(visible = F, 
+                                startOnTick = F, 
+                                endOnTick = F, 
+                                min = 0, 
+                                max = 9200000,
+                                labels=
                                   list(style=list(color=black,
                                                   fontFamily= main_font, # font_axis_label
                                                   fontWeight = regular_font_weight,
                                                   fontSize="12px",
-                                                  margin = 50))),
-                     legend = list(itemStyle = 
-                                     list(fontFamily= main_font, # font_axis_label
-                                          fontWeight = regular_font_weight,
-                                          color = black),
-                                   itemHoverStyle = 
-                                     list(fontFamily= main_font, # font_table_text
-                                          fontWeight = regular_font_weight,
-                                          color = black),
-                                   plotLines=list(color=gainsboro)))
+                                                  margin = 50))))
 
 ```
 
 
-```{r, include=FALSE}
+```{r data-prep, include=FALSE}
 
 # This Creates the data-frame for the Support & Revenue Barchart
 
@@ -108,68 +155,41 @@ df$support <- factor(df$support, levels = df$support[support_order])
 ```
 
 ```{r, echo=FALSE,out.width="100%", out.height="100%"}
-#(Color Option B- Developed from online color generator based on meteorite https://mycolor.space/?hex=%233A207D&sub=1)
 # Bar Chart for Support and Revenue 
-  hchart(df,
-    type = "bar",
-    hcaes(x = support, y =revenue, group=support
-    ),
-    dataLabels = list(enabled = TRUE, style = list(
-      fontSize = '14px'
-    ), format = '{point.revenue_label}')) %>% 
-    hc_tooltip(
-      headerFormat= "",
-    style = list(
-      color = black, 
-      fontFamily = main_font, # font_subtitle
-      fontWeight = black_font_weight,
-      fontSize='16px' ## size of labels
-    ), 
-    
-    pointFormat = "{point.percentage:.1f}", 
-    style = list(
-      color = black, 
-      fontFamily = main_font, # font_subtitle
-      fontWeight = black_font_weight,
-      fontSize='14px'
-    )) %>%
-      hc_tooltip(crosshairs = TRUE) %>% 
-      hc_yAxis(visible = F, startOnTick = F, endOnTick = F, min = 0, max = 9200000, 
-    title = list(text = paste0(""))) %>%
-      hc_xAxis(title = list(enabled = FALSE, text = paste0(""))) %>%
-    # title elements
-    hc_title(
-      text = paste0("Statement of Activities"),
-      align = "center", 
-      style = list(useHTML = TRUE, fontSize='25px')
-    ) %>% 
+highchart() %>%
+  hc_add_series(df,
+       type = "bar",
+       hcaes(x = support, y = revenue, group = support),
+       dataLabels = list(enabled = TRUE,
+                         format = '{point.revenue_label}')) %>%
+  hc_tooltip(headerFormat= "",
+             style = list(color = black, 
+                          fontFamily = main_font, # font_subtitle
+                          fontWeight = black_font_weight,
+                          fontSize='16px'), # size of labels
+             pointFormat = "{point.percentage:.1f}", 
+             style = list(color = black, 
+                          fontFamily = main_font, # font_subtitle
+                          fontWeight = black_font_weight,
+                          fontSize='14px')) %>%
   
-  hc_subtitle(
-      text = paste0("Support and Revenue"),
-      align = "left", 
-      style = list(useHTML = TRUE, fontSize='20px')
-    ) %>%
-     hc_caption(
-    text = paste0("Total Support & Revenue: $13,225,164"),
-    align = "center",
-    style = list(useHTML = TRUE, fontSize = '22px', fontFamily = main_font, # font_title
-      fontWeight = black_font_weight)) %>%
-    hc_add_theme(cc_theme)  %>% 
-  hc_size(
-      700, 480
-    )
-
+  hc_yAxis(title = list(text = paste0(""))) %>%
+  
+  hc_xAxis(title = list(enabled = FALSE, 
+                        text = paste0("")),
+           crosshair=TRUE) %>%
+  
+  hc_title(text = "Statement of Activities") %>% 
+  
+  hc_subtitle(text = "Support and Revenue") %>%
+  
+  hc_caption(text = "Total Support & Revenue: $13,225,164") %>%
+  
+  hc_add_theme(eoy_theme)  %>% 
+  
+  hc_size(700, 480)
 
 ```
-<style>
-.container-fluid {
-   padding-left: 0px;
-   padding-right: 0px;
-   height: 100% !important;
-   width: 100% !important;
-}
-</style>
-
 <script>
   widg = document.getElementsByClassName('html-widget'); //find widgets
   for (let i = 0; i < widg.length; i++) { //loop through
