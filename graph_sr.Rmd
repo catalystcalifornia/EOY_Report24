@@ -2,8 +2,6 @@
 title: ""
 output:
    html_document:
-
-       
 ---
 <!-- link to Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -44,7 +42,6 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                   style = list(fontFamily = main_font, 
                                                fontWeight = black_font_weight,
                                                color=white)),
-              
                      title = list(align="center",
                                   style = list(color = black,
                                                fontFamily = main_font, 
@@ -72,7 +69,6 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                 labels=list(style=list(color=black,
                                                   fontFamily = main_font, 
                                                   fontWeight = regular_font_weight,
-                                                  width=120,  #argument to modify the width of the labels,
                                                   fontSize="14px"))),
                      yAxis=list(title=list(enabled=FALSE),
                                 labels=list(style=list(color=black,
@@ -132,6 +128,7 @@ hchart(df,
   hc_size(700, 480)
 
 ```
+
 <script>
   widg = document.getElementsByClassName('html-widget'); //find widgets
   for (let i = 0; i < widg.length; i++) { //loop through
