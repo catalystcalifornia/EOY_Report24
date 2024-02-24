@@ -2,9 +2,7 @@
 title: ""
 output:
    html_document:
-    css: styles.css
-    includes:
-       in_header: inters.html
+    css: "W:\\RDA Team\\R\\cc_brandguide.css"
        
 ---
 <!-- link to Google Font -->
