@@ -132,7 +132,7 @@ hchart(df,
   
   hc_add_theme(eoy_theme) %>% 
   
-  hc_size(700, 480)
+  hc_size(width=700, height=510)
 
 ```
 
