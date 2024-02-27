@@ -20,10 +20,11 @@ options(highcharter.lang = lang)
 
 ```
 
-```{r, include=FALSE}
+```{r themes, include=FALSE}
 #### Set themes and options ####
 ## COLORS ##
 meteorite <- "#3A207D"
+lavender <- "#D6CADD"
 black <- "#000000"
 alabaster<-"#FBFBFB"
 white <- "#FFFFFF"
@@ -36,7 +37,7 @@ regular_font_weight <- 400
 
 # set theme 
 #(Theme colors Developed from online color generator based on meteorite https://mycolor.space/?hex=%233A207D&sub=1)
-eoy_colors <- c(meteorite, "#991F7B", "#D8406A", "#FC7957")
+eoy_colors <- c(meteorite, "#991F7B", "#D8406A", "#FC7957","#FFB951", "#FFEEAC", lavender)
 eoy_theme <- hc_theme(colors = eoy_colors,
                      chart = list(backgroundColor = alabaster,
                                   style = list(fontFamily = main_font, 
@@ -99,10 +100,12 @@ df <- data.frame(support, revenue) %>%
 ```
 
 ```{r, echo=FALSE,out.width="100%", out.height="100%"}
+support_category_colors <- c(meteorite, "#991F7B", "#D8406A", "#FC7957")
+
 # Bar Chart for Support and Revenue 
 hchart(df,
        type = "bar",
-       hcaes(x=support, y=revenue, color=eoy_colors),
+       hcaes(x=support, y=revenue, color=support_category_colors),
        dataLabels = list(enabled = TRUE,
                          format = '{point.revenue_label}',
                          style = list(fontFamily = main_font, # font_subtitle
