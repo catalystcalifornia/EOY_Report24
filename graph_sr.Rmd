@@ -2,85 +2,32 @@
 title: ""
 output:
    html_document:
-    css: styles.css
-    includes:
-       in_header: inters.html
-       
 ---
 <!-- link to Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-
-<!-- High-Chart Responsiveness -->
-<style type="text/css">
-div.main-container {
-  max-width: 100%;
-  max-height: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 ```{r setup, include=FALSE}
-# width> 8 creates a scroll-bar at the bottom. Should be 10 to fit the page
-#    fig_width: 10
-    #fig_height: 7
-#install packages if not already installed
-list.of.packages <- c("openxlsx","tidyr","dplyr","stringr","RPostgreSQL","data.table") #,"plyr"
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
-
 #### Set up workspace ####
-library(usethis)
-library(extrafont)
-library(ggrepel)
-library(rlang)
-library(stringr)
-library(tidyverse)
-library(here)
 library(dplyr)
-library(formattable)
-library(svglite)
-library(stringr)
-library(tidyr)
-library(showtext)
-library(scales)
-library(kableExtra)
-library(flextable)
 library(highcharter)
+
 knitr::opts_chunk$set(echo = FALSE)
 
-```
-
-```{r results="asis"}
-cat("
-<style>
-.container-fluid {
-   padding-left: 0px;
-   padding-right: 0px;
-   height: 100% !important;
-   width: 100% !important;
-}
-</style>
-")
-```
-
-
-
-```{r, include=FALSE}
-#### Set themes and options ####
 # set global options to ensure that comma separator is a comma for highchart graphs
 lang <- getOption("highcharter.lang")
 lang$thousandsSep <- ","
 options(highcharter.lang = lang)
 
+```
+
+```{r themes, include=FALSE}
+#### Set themes and options ####
 ## COLORS ##
-orange <- "#F25922"
-peridot <- "#CEEA01"
-lavender <- "#CEC4E2"
 meteorite <- "#3A207D"
-languid <- "#D6CADD"
+lavender <- "#D6CADD"
 black <- "#000000"
 alabaster<-"#FBFBFB"
+white <- "#FFFFFF"
 gainsboro <- "#2B2B2B"
 
 # define fonts in chart
@@ -88,203 +35,108 @@ main_font <- "Inter"
 black_font_weight <- 900
 regular_font_weight <- 400
 
-# highchart theme 
-cc_theme <- hc_theme(
-  colors = c(meteorite, lavender, orange, peridot
-  ),
-  chart = list(
-    backgroundColor = alabaster,
-    style = list(
-      fontFamily = main_font, # font_subtitle
-      fontWeight = black_font_weight,
-      color=alabaster
-    ) 
-  ),
-  plotOptions = 
-    list(
-      line = 
-        list(
-          marker = 
-            list(
-              # lineWidth=10 # this isn't working
-            )
-        )
-    ),
-  title = list(
-    style = list(
-      color = black,
-      fontFamily = main_font, # font_title
-      fontWeight = black_font_weight,
-      textAlign="left",
-      fontSize='24px'
-    )
-  ),
-  subtitle = list(
-    style = list(
-      color = black, 
-      fontFamily = main_font, # font_subtitle
-      fontWeight = black_font_weight,
-      textAlign="left",
-      fontSize='14px'
-    )
-  ),
-  caption = list(
-    style = list(
-      color = meteorite,
-      fontFamily = main_font, #font_caption
-      fontWeight = regular_font_weight,
-      textAlign = "left",
-      fontSize="8px"
-    ),
-    useHTML = TRUE
-  ),
-  axis = list(
-    style = list(
-      color = gainsboro,
-      fontFamily =  main_font, # font_axis_label
-      fontWeight = regular_font_weight,
-      fontSize='12px'
-    )
-  ),
-  
-  xAxis=list(
-    labels=list(
-      style=list(
-        color=black,
-        fontFamily = main_font, # font_x_label
-        fontWeight = regular_font_weight,
-        width=120,  #argument to modify the width of the labels,
-        spacingLeft = "150px",
-        fontSize="14px"
-      ))
-  ),
-  
-  yAxis=list(
-    labels=list(
-      style=list(
-        color=black,
-        fontFamily= main_font, # font_axis_label
-        fontWeight = regular_font_weight,
-        fontSize="12px",
-        margin = 50
-      ))
-  ),
-  
-  
-  legend = list(
-    itemStyle = list(
-      fontFamily= main_font, # font_axis_label
-        fontWeight = regular_font_weight,
-      color = black
-    ),
-    itemHoverStyle = list(
-      fontFamily= main_font, # font_table_text
-      fontWeight = regular_font_weight,
-      color = black
-    ),
-    # tooltip=list(headerFormat=""),
-    plotLines=list(color=gainsboro)
-  )
-)
+# set theme 
+#(Theme colors Developed from online color generator based on meteorite https://mycolor.space/?hex=%233A207D&sub=1)
+eoy_colors <- c(meteorite, "#991F7B", "#D8406A", "#FC7957","#FFB951", "#FFEEAC", lavender)
+eoy_theme <- hc_theme(colors = eoy_colors,
+                     chart = list(backgroundColor = alabaster,
+                                  style = list(fontFamily = main_font, 
+                                               fontWeight = black_font_weight,
+                                               color=white)),
+                     title = list(align="center",
+                                  style = list(color = black,
+                                               fontFamily = main_font, 
+                                               fontWeight = black_font_weight,
+                                               fontSize='25px'),
+                                  useHTML = TRUE),
+                     subtitle = list(align="left",
+                                     style = list(color = black,
+                                                  fontFamily = main_font, 
+                                                  fontWeight = black_font_weight,
+                                                  fontSize='20px'),
+                                     useHTML = TRUE),
+                     caption = list(align="center",
+                                    style = list(color = meteorite,
+                                                 fontFamily = main_font, 
+                                                 fontWeight = black_font_weight,
+                                                 fontSize="22px"),
+                                    useHTML = TRUE),
+             
+                     axis = list(style = list(color = gainsboro,
+                                              fontFamily =  main_font,
+                                              fontWeight = regular_font_weight,
+                                              fontSize='14px')),
+                     xAxis=list(title=list(enabled=FALSE),
+                                labels=list(style=list(color=black,
+                                                  fontFamily = main_font, 
+                                                  fontWeight = regular_font_weight,
+                                                  fontSize="14px"))),
+                     yAxis=list(title=list(enabled=FALSE),
+                                labels=list(style=list(color=black,
+                                                  fontFamily= main_font, # font_axis_label
+                                                  fontWeight = regular_font_weight,
+                                                  fontSize="14px")),
+                                visible = F, 
+                                startOnTick = F, 
+                                endOnTick = F))
 
 ```
 
 
-```{r, include=FALSE}
+```{r data-prep, include=FALSE}
 
 # This Creates the data-frame for the Support & Revenue Barchart
 
 support <- c("Contributions", "Contracts", "Grants", "Other Income")
 revenue <- c(2359843, 1779856, 9018627, 66838)
 
-color_option_b <- c(meteorite, "#991F7B", "#D8406A", "#FC7957")
-
-
-df <- data.frame(support, revenue)
-
-df <- df %>% mutate(percentage=round(revenue/sum(revenue)*100,1))
-
-df <- df %>% mutate(percentage=paste0(round(revenue/sum(revenue)*100,1),"%"))
-
-df <- df %>% arrange(desc(revenue))
-
-df<- df %>% mutate(revenue_label = paste0("$", prettyNum(revenue, big.mark = ",", scientific = FALSE)))
-
+df <- data.frame(support, revenue) %>%
+  mutate(percentage=paste0(round(revenue/sum(revenue)*100, 1), "%"),
+         revenue_label = paste0("$", prettyNum(revenue, big.mark = ",", scientific = FALSE))) %>%
+  arrange(desc(revenue))
 
 # Total Support & Revenue: $13,225,164
-
 
 ```
 
 ```{r, echo=FALSE,out.width="100%", out.height="100%"}
-#(Color Option B- Developed from online color generator based on meteorite https://mycolor.space/?hex=%233A207D&sub=1)
+support_category_colors <- c(meteorite, "#991F7B", "#D8406A", "#FC7957")
+
 # Bar Chart for Support and Revenue 
-  hchart(df ,
-    type = "bar",
-    hcaes(x = support, y =revenue,
-    color = color_option_b),
-    dataLabels = list(enabled = TRUE, style = list(
-      fontSize = '14px'
-    ), format = '{point.revenue_label}')) %>% 
-    hc_tooltip(
-      headerFormat= "",
-    style = list(
-      color = black, 
-      fontFamily = main_font, # font_subtitle
-      fontWeight = black_font_weight,
-      fontSize='16px' ## size of labels
-    ), 
-    
-    pointFormat = "{point.percentage:.1f}", 
-    style = list(
-      color = black, 
-      fontFamily = main_font, # font_subtitle
-      fontWeight = black_font_weight,
-      fontSize='14px'
-    )) %>%
-      hc_tooltip(crosshairs = TRUE) %>% 
-      hc_yAxis(visible = F, startOnTick = F, endOnTick = F, min = 0, max = 9200000, 
-    title = list(text = paste0(""))) %>%
-      hc_xAxis(title = list(enabled = FALSE, text = paste0(""))) %>%
-    # title elements
-    hc_title(
-      text = paste0("Statement of Activities"),
-      align = "center", 
-      style = list(useHTML = TRUE, fontSize='25px')
-    ) %>% 
+hchart(df,
+       type = "bar",
+       hcaes(x=support, y=revenue, color=support_category_colors),
+       dataLabels = list(enabled = TRUE,
+                         format = '{point.revenue_label}',
+                         style = list(fontFamily = main_font, # font_subtitle
+                          fontWeight = black_font_weight,
+                          fontSize='14px'))) %>%
+  hc_tooltip(headerFormat= "",
+             style = list(color = black,
+                          fontFamily = main_font, # font_subtitle
+                          fontWeight = black_font_weight,
+                          fontSize='16px'), # size of labels
+             pointFormat = "{point.percentage:.1f}") %>%
   
-  hc_subtitle(
-      text = paste0("Support and Revenue"),
-      align = "left", 
-      style = list(useHTML = TRUE, fontSize='20px')
-    ) %>%
-     hc_caption(
-    text = paste0("Total Support & Revenue: $13,225,164"),
-    align = "center",
-    style = list(useHTML = TRUE, fontSize = '22px', fontFamily = main_font, # font_title
-      fontWeight = black_font_weight)) %>%
-    hc_add_theme(cc_theme)  %>% hc_size(
-      700, 480
-    )
- #700, 480
-  #  hc_exporting(
-  #    enabled = TRUE, sourceWidth=900, sourceHeight=600, 
-  #    chartOptions=list(plotOptions=list(series=list(dataLabels=list(enabled=TRUE, format='{y} %')))),
-  #    filename = "catalystcalifornia.org, 2023."
+  hc_yAxis(min = 0,
+           max = 9200000) %>%
+
+  hc_title(text = "Statement of Activities") %>%
+
+  hc_subtitle(text = "Support and Revenue") %>%
+
+  hc_caption(text = "Total Support & Revenue: $13,225,164") %>%
+  
+  hc_add_theme(eoy_theme)  %>% 
+
+  hc_size(700, 480)
 
 ```
 
-```{css, echo=FALSE}
-.highcharts-container{
-  width: 100% !important;
-}
-
-.highcharts-root{
-  width: 100% !important;
-}
-```
-
-
-
-
-
+<script>
+  widg = document.getElementsByClassName('html-widget'); //find widgets
+  for (let i = 0; i < widg.length; i++) { //loop through
+    document.getElementsByClassName('highchart')[i].style.width = '100%'; //adjust width
+    document.getElementsByClassName('highchart')[i].style.height = '100%'; //adjust height
+  }
+</script>
