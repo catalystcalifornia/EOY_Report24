@@ -77,9 +77,7 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                                   fontSize="14px")),
                                 visible = F, 
                                 startOnTick = F, 
-                                endOnTick = F, 
-                                min = 0, 
-                                max = 9200000))
+                                endOnTick = F))
 
 ```
 
@@ -116,6 +114,9 @@ hchart(df,
                           fontWeight = black_font_weight,
                           fontSize='16px'), # size of labels
              pointFormat = "{point.percentage:.1f}") %>%
+  
+  hc_yAxis(min = 0,
+           max = 9200000) %>%
 
   hc_title(text = "Statement of Activities") %>%
 
