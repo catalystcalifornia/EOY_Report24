@@ -1,0 +1,120 @@
+/* EOY Annual Charts CSS Stylesheet for RMDs*/
+
+/* --Media Queries-- */
+@media (min-width: 320px) {
+  .highcharts-title{
+    font-size: 18px !important
+  }
+
+  .highcharts-subtitle{
+    font-size: 12px !important
+  }
+
+  .highcharts-axis-labels{
+    font-size: 8px !important
+  }
+
+  .highcharts-caption{
+    font-size: 8px !important
+  }
+
+  .highcharts-bubble-legend-labels{
+    font-size: 8px !important
+  }
+
+}
+
+
+@media (min-width: 480px) {
+  .highcharts-title{
+    font-size: 18px !important
+  }
+
+  .highcharts-subtitle{
+    font-size: 12px !important
+  }
+
+  .highcharts-axis-labels{
+    font-size: 8px !important
+  }
+
+  .highcharts-caption{
+    font-size: 8px !important
+  }
+
+  .highcharts-bubble-legend-labels{
+    font-size: 8px !important
+  }
+
+
+}
+
+@media (min-width: 768px) {
+  .highcharts-title{
+    font-size: 21px !important
+  }
+
+  .highcharts-subtitle{
+    font-size: 14px !important
+  }
+
+  .highcharts-axis-labels{
+    font-size: 10px !important
+  }
+
+  .highcharts-caption{
+    font-size: 10px !important
+  }
+
+  .highcharts-bubble-legend-labels{
+    font-size: 10px !important
+  }
+
+
+}
+
+@media (min-width: 992px) {
+  .highcharts-title{
+    font-size: 21px !important
+  }
+
+  .highcharts-subtitle{
+    font-size: 14px !important
+  }
+
+  .highcharts-axis-labels{
+    font-size: 14px !important
+  }
+
+  .highcharts-axis-labels .highcharts-xaxis-labels{
+    font-size: 10px !important
+  }
+
+  .highcharts-axis-labels .highcharts-yaxis-labels{
+    font-size: 10px !important
+  }
+
+  .highcharts-caption{
+    font-size: 10px !important
+  }
+
+  .highcharts-container{
+    height: 472px !important
+  }
+
+  .highcharts-legend-item{
+    font-size: 14px !important
+  }
+
+  .highcharts-bubble-legend-labels{
+    font-size: 10px !important
+  }
+
+
+  /* .highcharts-tooltip {
+    width:40px !important;
+    overflow: auto;
+    white-space: normal !important;
+} */
+}
+
