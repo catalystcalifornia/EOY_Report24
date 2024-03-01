@@ -3,7 +3,7 @@
 /* --Media Queries-- */
 @media (min-width: 320px) {
    .highcharts-title{
-    font-size: 21px !important
+    font-size: 18px !important
   }
 
   .highcharts-subtitle{
@@ -23,7 +23,7 @@
   }
 
   .highcharts-caption{
-    font-size: 18px !important
+    font-size: 16px !important
   }
   
   .highcharts-data-label {
