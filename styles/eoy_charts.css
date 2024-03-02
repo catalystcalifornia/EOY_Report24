@@ -3,11 +3,12 @@
 /* --Media Queries-- */
 @media (min-width: 320px) {
    .highcharts-title{
-    font-size: 18px !important
+    font-size: 14px !important;
   }
 
   .highcharts-subtitle{
-    font-size: 16px !important
+    font-size: 14px !important
+    
   }
 
   .highcharts-axis-labels{
@@ -23,7 +24,7 @@
   }
 
   .highcharts-caption{
-    font-size: 16px !important
+    font-size: 14px !important;
   }
   
   .highcharts-data-label {

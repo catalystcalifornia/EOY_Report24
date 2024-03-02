@@ -44,18 +44,21 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                   style = list(fontFamily = main_font, 
                                                fontWeight = black_font_weight,
                                                color=white)),
+                      
                      title = list(align="center",
                                   style = list(color = black,
                                                fontFamily = main_font, 
                                                fontWeight = black_font_weight,
                                                fontSize='25px'),
                                   useHTML = TRUE),
+                     
                      subtitle = list(align="left",
                                      style = list(color = black,
                                                   fontFamily = main_font, 
                                                   fontWeight = black_font_weight,
                                                   fontSize='20px'),
                                      useHTML = TRUE),
+                     
                      caption = list(align="center",
                                     style = list(color = meteorite,
                                                  fontFamily = main_font, 
@@ -67,11 +70,13 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                               fontFamily =  main_font,
                                               fontWeight = regular_font_weight,
                                               fontSize='14px')),
+                     
                      xAxis=list(title=list(enabled=FALSE),
                                 labels=list(style=list(color=black,
                                                   fontFamily = main_font, 
                                                   fontWeight = regular_font_weight,
                                                   fontSize="14px"))),
+                     
                      yAxis=list(title=list(enabled=FALSE),
                                 labels=list(style=list(color=black,
                                                   fontFamily= main_font, # font_axis_label
@@ -79,7 +84,23 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                                   fontSize="14px")),
                                 visible = F, 
                                 startOnTick = F, 
-                                endOnTick = F))
+                                endOnTick = F),
+                     
+                     tooltip=list(headerFormat= "",
+                                  style = list(color = black,
+                                               fontFamily = main_font, 
+                                               fontWeight = black_font_weight,
+                                               fontSize='16px')),
+                     
+                     plotOptions = list(bar = list(dataLabels = list(enabled = TRUE,
+                                                          style = list (fontSize ='14px',
+                                                                        fontFamily = main_font,
+                                                                        fontWeight = black_font_weight))),
+                                        pie = list(dataLabels = list(enabled = TRUE,
+                                                                     style = list(color = black,
+                                                                                  fontFamily = main_font,
+                                                                                  fontWeight = regular_font_weight,
+                                                                                  fontSize="14px")))))
 
 ```
 
@@ -101,19 +122,12 @@ df <- df %>% arrange(desc(percentage))
 # Total Assets	 $6798530
 ```
 
-```{r, echo=FALSE,out.width="100%", out.height="100%"}
+```{r, echo=FALSE}
 hchart(df,
-       "pie", hcaes(x = assets, y = percentage),
-       name = "Assets", 
-       dataLabels = list(enabled = TRUE, 
-                         style = list(fontSize = '14px'))) %>%
+       "pie", 
+       hcaes(x = assets, y = percentage)) %>%
   
-  hc_tooltip(headerFormat= "",
-             style = list(color = black, 
-                          fontFamily = main_font, # font_subtitle
-                          fontWeight = black_font_weight,
-                          fontSize='16px'),
-             pointFormat = "{point.assets} </b> <br> {point.value:.0f} </b> <br> {point.percentage:.1f}%") %>%
+  hc_tooltip(pointFormat = "{point.assets} </b> <br> {point.value:.0f} </b> <br> {point.percentage:.1f}%") %>%
   
   hc_legend(enabled = FALSE) %>%
   
@@ -123,26 +137,17 @@ hchart(df,
   
   hc_caption(text = paste0("Total Assets: $12,728,275")) %>%
   
-  hc_plotOptions(
-    pie = list(dataLabels = list(distance = 50,
-                                 enabled = TRUE,
-                                 style = list(color = black,
-                                              fontFamily = "Inter",
-                                              fontWeight = regular_font_weight,
-                                              fontSize="14"))) ) %>%
-  
   hc_add_theme(eoy_theme) %>% 
   
   hc_size(height=480)
 
 ```
 
-
 <script>
-  widg = document.getElementsByClassName('html-widget'); //find widgets
-  for (let i = 0; i < widg.length; i++) { //loop through
-    document.getElementsByClassName('highchart')[i].style.width = '100%'; //adjust width
-    document.getElementsByClassName('highchart')[i].style.height = '100%'; //adjust height
-  }
+  document.querySelectorAll('.highchart').forEach((e) => {
+    e.style.width = '100%';
+  })
+  document.querySelectorAll('.highchart').forEach((e) => {
+    e.style.height = '100%';
+  })
 </script>
-

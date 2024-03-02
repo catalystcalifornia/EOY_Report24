@@ -44,18 +44,21 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                   style = list(fontFamily = main_font, 
                                                fontWeight = black_font_weight,
                                                color=white)),
+                      
                      title = list(align="center",
                                   style = list(color = black,
                                                fontFamily = main_font, 
                                                fontWeight = black_font_weight,
                                                fontSize='25px'),
                                   useHTML = TRUE),
+                     
                      subtitle = list(align="left",
                                      style = list(color = black,
                                                   fontFamily = main_font, 
                                                   fontWeight = black_font_weight,
                                                   fontSize='20px'),
                                      useHTML = TRUE),
+                     
                      caption = list(align="center",
                                     style = list(color = meteorite,
                                                  fontFamily = main_font, 
@@ -67,11 +70,13 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                               fontFamily =  main_font,
                                               fontWeight = regular_font_weight,
                                               fontSize='14px')),
+                     
                      xAxis=list(title=list(enabled=FALSE),
                                 labels=list(style=list(color=black,
                                                   fontFamily = main_font, 
                                                   fontWeight = regular_font_weight,
                                                   fontSize="14px"))),
+                     
                      yAxis=list(title=list(enabled=FALSE),
                                 labels=list(style=list(color=black,
                                                   fontFamily= main_font, # font_axis_label
@@ -79,7 +84,23 @@ eoy_theme <- hc_theme(colors = eoy_colors,
                                                   fontSize="14px")),
                                 visible = F, 
                                 startOnTick = F, 
-                                endOnTick = F))
+                                endOnTick = F),
+                     
+                     tooltip=list(headerFormat= "",
+                                  style = list(color = black,
+                                               fontFamily = main_font, 
+                                               fontWeight = black_font_weight,
+                                               fontSize='16px')),
+                     
+                     plotOptions = list(bar = list(dataLabels = list(enabled = TRUE,
+                                                          style = list (fontSize ='14px',
+                                                                        fontFamily = main_font,
+                                                                        fontWeight = black_font_weight))),
+                                        pie = list(dataLabels = list(enabled = TRUE,
+                                                                     style = list(color = black,
+                                                                                  fontFamily = main_font,
+                                                                                  fontWeight = regular_font_weight,
+                                                                                  fontSize="14px")))))
 
 ```
 
@@ -100,24 +121,17 @@ df <- data.frame(support, revenue) %>%
 
 ```
 
-```{r, echo=FALSE,out.width="100%", out.height="100%"}
+```{r, echo=FALSE}
 support_category_colors <- c(meteorite, "#991F7B", "#D8406A", "#FC7957")
 
 # Bar Chart for Support and Revenue 
 hchart(df,
        type = "bar",
        hcaes(x=support, y=revenue, color=support_category_colors),
-       dataLabels = list(enabled = TRUE,
-                         format = '{point.revenue_label}',
-                         style = list(fontFamily = main_font, # font_subtitle
-                          fontWeight = black_font_weight,
-                          fontSize='14px'))) %>%
-  hc_tooltip(headerFormat= "",
-             style = list(color = black,
-                          fontFamily = main_font, # font_subtitle
-                          fontWeight = black_font_weight,
-                          fontSize='16px'), # size of labels
-             pointFormat = "{point.percentage:.1f}") %>%
+       dataLabels = list(
+                         format = '{point.revenue_label}')) %>%
+  
+  hc_tooltip(pointFormat = "{point.percentage:.1f}") %>%
   
   hc_yAxis(min = 0,
            max = 9200000) %>%
@@ -135,9 +149,10 @@ hchart(df,
 ```
 
 <script>
-  widg = document.getElementsByClassName('html-widget'); //find widgets
-  for (let i = 0; i < widg.length; i++) { //loop through
-    document.getElementsByClassName('highchart')[i].style.width = '100%'; //adjust width
-    document.getElementsByClassName('highchart')[i].style.height = '100%'; //adjust height
-  }
+  document.querySelectorAll('.highchart').forEach((e) => {
+    e.style.width = '100%';
+  })
+  document.querySelectorAll('.highchart').forEach((e) => {
+    e.style.height = '100%';
+  })
 </script>
